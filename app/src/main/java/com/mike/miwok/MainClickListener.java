@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-public class ClickListener implements View.OnClickListener {
+public class MainClickListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         Context context = view.getContext();
