@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/root_item_view"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_padding" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/activity_padding">
 
-    <TextView
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item_miwok"
-        tools:text="lutti" />
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_padding">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_english"
-        tools:text="one" />
+        <TextView
+            android:id="@+id/item_miwok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="lutti" />
+
+        <TextView
+            android:id="@+id/item_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="one" />
+
+    </LinearLayout>
 
 </LinearLayout>
