@@ -4,34 +4,33 @@
     android:id="@+id/root_item_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="@dimen/activity_padding">
+    android:background="@color/tan_background"
+    android:minHeight="@dimen/list_item_height"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        />
+        android:layout_width="@dimen/image_width"
+        android:layout_height="@dimen/image_height"
+        android:layout_gravity="center_vertical|center_horizontal" />
 
     <LinearLayout
+        android:id="@+id/text_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/activity_padding">
 
         <TextView
             android:id="@+id/item_miwok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="lutti" />
+            style="@style/WordsStyle"
+            android:gravity="bottom"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/item_english"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="one" />
+            style="@style/WordsStyle"
+            android:gravity="top" />
 
     </LinearLayout>
 

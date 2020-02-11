@@ -5,7 +5,8 @@ import javax.xml.transform.Source;
 public class Word {
     private String mEnglishWord;
     private String mMiwokWord;
-    private int mImageId;
+    private int mImageId = NO_IMAGE_PROVIDED;
+    private static final int NO_IMAGE_PROVIDED = -1;
 
     public Word(String englishWord, String miwokWord) {
         mEnglishWord = englishWord;
@@ -28,5 +29,9 @@ public class Word {
 
     public int getImageId() {
         return mImageId;
+    }
+
+    public boolean hasImage() {
+        return mImageId != NO_IMAGE_PROVIDED;
     }
 }
