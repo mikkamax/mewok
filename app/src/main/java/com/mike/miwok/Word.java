@@ -1,19 +1,19 @@
 package com.mike.miwok;
 
 public class Word {
+    private String mEnglishWord;
     private String mMiwokWord;
-    private String mDefaultWord;
 
-    public Word(String miwokWord, String defaultWord) {
+    public Word(String englishWord, String miwokWord) {
+        mEnglishWord = englishWord;
         mMiwokWord = miwokWord;
-        mDefaultWord = defaultWord;
+    }
+
+    public String getmEnglishWord() {
+        return mEnglishWord;
     }
 
     public String getMiwokWord() {
         return mMiwokWord;
-    }
-
-    public String getDefaultWord() {
-        return mDefaultWord;
     }
 }
