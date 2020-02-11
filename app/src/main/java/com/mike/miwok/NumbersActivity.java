@@ -27,9 +27,10 @@ public class NumbersActivity extends AppCompatActivity {
                 new Word("nine", "wo’e", R.drawable.number_nine),
                 new Word("ten", "na’aacha", R.drawable.number_ten)));
 
-        WordAdapter wordAdapter = new WordAdapter(this, numbers);
+        WordAdapter wordAdapter = new WordAdapter(this, numbers, R.color.category_numbers);
 
         ListView listView = findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
+//        listView.findViewById(R.id.text_container).setBackgroundColor(getResources().getColor(R.color.category_numbers));
     }
 }
