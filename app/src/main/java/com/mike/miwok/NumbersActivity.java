@@ -2,20 +2,24 @@ package com.mike.miwok;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NumbersActivity extends AppCompatActivity {
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
 
-        ArrayList<Word> numbers = new ArrayList<>(Arrays.asList(
+        final ArrayList<Word> numbers = new ArrayList<>(Arrays.asList(
                 new Word("one", "lutti", R.drawable.number_one, R.raw.number_one),
                 new Word("two", "otiiko", R.drawable.number_two, R.raw.number_two),
                 new Word("three", "tolookosu", R.drawable.number_three, R.raw.number_three),
@@ -31,5 +35,17 @@ public class NumbersActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+                    mediaPlayer.release();
+                }
+                mediaPlayer = MediaPlayer.create(NumbersActivity.this, numbers.get(position).getSoundResourceId());
+                mediaPlayer.start();
+            }
+        });
     }
 }
