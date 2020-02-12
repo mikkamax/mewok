@@ -18,19 +18,36 @@
         android:id="@+id/text_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_padding">
 
-        <TextView
-            android:id="@+id/item_miwok"
-            style="@style/WordsStyle"
-            android:gravity="bottom"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.7"
+            >
 
-        <TextView
-            android:id="@+id/item_english"
-            style="@style/WordsStyle"
-            android:gravity="top" />
+            <TextView
+                android:id="@+id/item_miwok"
+                style="@style/WordsStyle"
+                android:gravity="bottom"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_english"
+                style="@style/WordsStyle"
+                android:gravity="top" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/item_sound"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/baseline_play_circle_outline_white_36"
+            android:layout_weight="0.3"
+            />
 
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.mike.miwok;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter<Word> {
     private int mColorResourceId;
+    private MediaPlayer mediaPlayer;
 
     public WordAdapter(Context context, ArrayList<Word> words, int colorResourceId) {
         super(context, 0, words);
@@ -25,10 +27,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.item_layout, parent, false);
         }
 
+        final Word currentWord = getItem(position);
+
         View textContainer = listItemView.findViewById(R.id.text_container);
         textContainer.setBackgroundColor(getContext().getResources().getColor(mColorResourceId));
-
-        Word currentWord = getItem(position);
 
         TextView miwok = listItemView.findViewById(R.id.item_miwok);
         miwok.setText(currentWord.getMiwokWord());
@@ -38,11 +40,31 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         ImageView image = listItemView.findViewById(R.id.item_image);
         if (currentWord.hasImage()) {
-            image.setImageResource(currentWord.getImageId());
+            image.setImageResource(currentWord.getImageResourceId());
             image.setVisibility(View.VISIBLE);
         }
         else {
             image.setVisibility(View.GONE);
+        }
+
+        ImageView sound = listItemView.findViewById(R.id.item_sound);
+        if (currentWord.hasSound()) {
+            sound.setVisibility(View.VISIBLE);
+            textContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mediaPlayer != null) {
+                            mediaPlayer.stop();
+                            mediaPlayer.reset();
+                            mediaPlayer.release();
+                    }
+                    mediaPlayer = MediaPlayer.create(getContext(), currentWord.getSoundResourceId());
+                    mediaPlayer.start();
+                }
+            });
+        }
+        else {
+            sound.setVisibility(View.GONE);
         }
 
         return listItemView;

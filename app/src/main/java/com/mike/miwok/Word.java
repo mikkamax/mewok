@@ -1,22 +1,29 @@
 package com.mike.miwok;
 
-import javax.xml.transform.Source;
-
 public class Word {
     private String mEnglishWord;
     private String mMiwokWord;
-    private int mImageId = NO_IMAGE_PROVIDED;
+    private int mImageResourceId = NO_IMAGE_PROVIDED;
+    private int mSoundResourceId = NO_SOUND_PROVIDED;
     private static final int NO_IMAGE_PROVIDED = -1;
+    private static final int NO_SOUND_PROVIDED = -1;
 
     public Word(String englishWord, String miwokWord) {
         mEnglishWord = englishWord;
         mMiwokWord = miwokWord;
     }
 
-    public Word(String englishWord, String miwokWord, int imageId) {
+    public Word(String englishWord, String miwokWord, int soundResourceId) {
         mEnglishWord = englishWord;
         mMiwokWord = miwokWord;
-        mImageId = imageId;
+        mSoundResourceId = soundResourceId;
+    }
+
+    public Word(String englishWord, String miwokWord, int imageResourceId, int soundResourceId) {
+        mEnglishWord = englishWord;
+        mMiwokWord = miwokWord;
+        mImageResourceId = imageResourceId;
+        mSoundResourceId = soundResourceId;
     }
 
     public String getEnglishWord() {
@@ -27,11 +34,19 @@ public class Word {
         return mMiwokWord;
     }
 
-    public int getImageId() {
-        return mImageId;
+    public int getImageResourceId() {
+        return mImageResourceId;
+    }
+
+    public int getSoundResourceId() {
+        return mSoundResourceId;
     }
 
     public boolean hasImage() {
-        return mImageId != NO_IMAGE_PROVIDED;
+        return mImageResourceId != NO_IMAGE_PROVIDED;
+    }
+
+    public boolean hasSound() {
+        return mSoundResourceId != NO_SOUND_PROVIDED;
     }
 }
