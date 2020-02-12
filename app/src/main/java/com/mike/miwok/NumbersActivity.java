@@ -51,4 +51,10 @@ public class NumbersActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+    }
 }
