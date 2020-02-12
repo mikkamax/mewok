@@ -12,7 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FamilyActivity extends AppCompatActivity {
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mMediaPlayer;
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +44,10 @@ public class FamilyActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer.reset();
-                    mediaPlayer.release();
-                }
-                mediaPlayer = MediaPlayer.create(FamilyActivity.this, family.get(position).getSoundResourceId());
-                mediaPlayer.start();
+                mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+                mMediaPlayer = MediaPlayer.create(FamilyActivity.this, family.get(position).getSoundResourceId());
+                mMediaPlayer.start();
+                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
             }
         });
     }
