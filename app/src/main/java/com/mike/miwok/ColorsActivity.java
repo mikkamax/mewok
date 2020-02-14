@@ -1,6 +1,5 @@
 package com.mike.miwok;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,18 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ColorsActivity extends AppCompatActivity {
-    private MediaPlayer mMediaPlayer;
-    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-        }
-    };
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
         final ArrayList<Word> colors = new ArrayList<>(Arrays.asList(
                 new Word("red", "weṭeṭṭi", R.drawable.color_red, R.raw.color_red),
@@ -42,10 +36,7 @@ public class ColorsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-                mMediaPlayer = MediaPlayer.create(ColorsActivity.this, colors.get(position).getSoundResourceId());
-                mMediaPlayer.start();
-                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                audioHandler.play(ColorsActivity.this, colors.get(position).getSoundResourceId());
             }
         });
     }
@@ -53,6 +44,6 @@ public class ColorsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+        audioHandler.releaseMediaPlayer();
     }
 }

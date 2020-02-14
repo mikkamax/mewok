@@ -12,18 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FamilyActivity extends AppCompatActivity {
-    private MediaPlayer mMediaPlayer;
-    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-        }
-    };
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
         final ArrayList<Word> family = new ArrayList<>(Arrays.asList(
                 new Word("father", "әpә", R.drawable.family_father, R.raw.family_father),
@@ -44,10 +39,7 @@ public class FamilyActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-                mMediaPlayer = MediaPlayer.create(FamilyActivity.this, family.get(position).getSoundResourceId());
-                mMediaPlayer.start();
-                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                audioHandler.play(FamilyActivity.this, family.get(position).getSoundResourceId());
             }
         });
     }
@@ -55,6 +47,6 @@ public class FamilyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+        audioHandler.releaseMediaPlayer();
     }
 }

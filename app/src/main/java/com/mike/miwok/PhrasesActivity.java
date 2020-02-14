@@ -12,18 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PhrasesActivity extends AppCompatActivity {
-    private MediaPlayer mMediaPlayer;
-    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-        }
-    };
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
         final ArrayList<Word> phrases = new ArrayList<>(Arrays.asList(
                 new Word("Where are you going?", "minto wuksus", R.raw.phrase_where_are_you_going),
@@ -44,10 +39,7 @@ public class PhrasesActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
-                mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, phrases.get(position).getSoundResourceId());
-                mMediaPlayer.start();
-                mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                audioHandler.play(PhrasesActivity.this, phrases.get(position).getSoundResourceId());
             }
         });
     }
@@ -55,6 +47,6 @@ public class PhrasesActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mMediaPlayer = Util.releaseMediaPlayer(mMediaPlayer);
+        audioHandler.releaseMediaPlayer();
     }
 }
