@@ -1,20 +1,26 @@
 package com.mike.miwok;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FamilyActivity extends AppCompatActivity {
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
-        ArrayList<Word> family = new ArrayList<>(Arrays.asList(
+        final ArrayList<Word> family = new ArrayList<>(Arrays.asList(
                 new Word("father", "әpә", R.drawable.family_father, R.raw.family_father),
                 new Word("mother", "әṭa", R.drawable.family_mother, R.raw.family_mother),
                 new Word("son", "angsi", R.drawable.family_son, R.raw.family_son),
@@ -30,5 +36,17 @@ public class FamilyActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                audioHandler.play(FamilyActivity.this, family.get(position).getSoundResourceId());
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        audioHandler.releaseMediaPlayer();
     }
 }

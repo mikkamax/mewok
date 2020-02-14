@@ -1,6 +1,8 @@
 package com.mike.miwok;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ColorsActivity extends AppCompatActivity {
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
-        ArrayList<Word> colors = new ArrayList<>(Arrays.asList(
+        final ArrayList<Word> colors = new ArrayList<>(Arrays.asList(
                 new Word("red", "weṭeṭṭi", R.drawable.color_red, R.raw.color_red),
                 new Word("green", "chokokki", R.drawable.color_green, R.raw.color_green),
                 new Word("brown", "ṭakaakki", R.drawable.color_brown, R.raw.color_brown),
@@ -29,5 +33,17 @@ public class ColorsActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                audioHandler.play(ColorsActivity.this, colors.get(position).getSoundResourceId());
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        audioHandler.releaseMediaPlayer();
     }
 }

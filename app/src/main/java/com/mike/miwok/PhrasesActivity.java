@@ -1,20 +1,26 @@
 package com.mike.miwok;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PhrasesActivity extends AppCompatActivity {
+    private AudioHandler audioHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
 
-        ArrayList<Word> phrases = new ArrayList<>(Arrays.asList(
+        final ArrayList<Word> phrases = new ArrayList<>(Arrays.asList(
                 new Word("Where are you going?", "minto wuksus", R.raw.phrase_where_are_you_going),
                 new Word("What is your name?", "tinnә oyaase'nә", R.raw.phrase_what_is_your_name),
                 new Word("My name is...", "oyaaset...", R.raw.phrase_my_name_is),
@@ -30,5 +36,17 @@ public class PhrasesActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                audioHandler.play(PhrasesActivity.this, phrases.get(position).getSoundResourceId());
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        audioHandler.releaseMediaPlayer();
     }
 }
