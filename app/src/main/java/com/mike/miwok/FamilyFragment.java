@@ -1,23 +1,27 @@
 package com.mike.miwok;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FamilyActivity extends AppCompatActivity {
+public class FamilyFragment extends Fragment {
     private AudioHandler audioHandler;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.words_list);
-        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.words_list, container, false);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getActivity());
 
         final ArrayList<Word> family = new ArrayList<>(Arrays.asList(
                 new Word("father", "әpә", R.drawable.family_father, R.raw.family_father),
@@ -31,20 +35,22 @@ public class FamilyActivity extends AppCompatActivity {
                 new Word("grandmother", "ama", R.drawable.family_grandmother, R.raw.family_grandmother),
                 new Word("grandfather", "paapa", R.drawable.family_grandfather, R.raw.family_grandfather)));
 
-        WordAdapter wordAdapter = new WordAdapter(this, family, R.color.category_family);
+        WordAdapter wordAdapter = new WordAdapter(getActivity(), family, R.color.category_family);
 
-        ListView listView = findViewById(R.id.wordsList);
+        ListView listView = rootView.findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                audioHandler.play(FamilyActivity.this, family.get(position).getSoundResourceId());
+                audioHandler.play(getActivity(), family.get(position).getSoundResourceId());
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         audioHandler.releaseMediaPlayer();
     }

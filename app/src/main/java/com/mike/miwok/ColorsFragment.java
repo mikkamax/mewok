@@ -1,23 +1,27 @@
 package com.mike.miwok;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ColorsActivity extends AppCompatActivity {
+public class ColorsFragment extends Fragment {
     private AudioHandler audioHandler;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.words_list);
-        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.words_list, container, false);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getActivity());
 
         final ArrayList<Word> colors = new ArrayList<>(Arrays.asList(
                 new Word("red", "weṭeṭṭi", R.drawable.color_red, R.raw.color_red),
@@ -29,20 +33,22 @@ public class ColorsActivity extends AppCompatActivity {
                 new Word("dusty yellow", "ṭopiisә", R.drawable.color_dusty_yellow, R.raw.color_dusty_yellow),
                 new Word("mustard yellow", "chiwiiṭә", R.drawable.color_mustard_yellow, R.raw.color_mustard_yellow)));
 
-        WordAdapter wordAdapter = new WordAdapter(this, colors, R.color.category_colors);
+        WordAdapter wordAdapter = new WordAdapter(getActivity(), colors, R.color.category_colors);
 
-        ListView listView = findViewById(R.id.wordsList);
+        ListView listView = rootView.findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                audioHandler.play(ColorsActivity.this, colors.get(position).getSoundResourceId());
+                audioHandler.play(getActivity(), colors.get(position).getSoundResourceId());
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         audioHandler.releaseMediaPlayer();
     }

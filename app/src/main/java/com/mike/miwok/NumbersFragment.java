@@ -1,23 +1,24 @@
 package com.mike.miwok;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NumbersActivity extends AppCompatActivity {
+public class NumbersFragment extends Fragment {
     private AudioHandler audioHandler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.words_list);
-        audioHandler = AudioHandler.getAudioHandlerInstance(getApplicationContext());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.words_list, container, false);
+        audioHandler = AudioHandler.getAudioHandlerInstance(getActivity());
 
         final ArrayList<Word> numbers = new ArrayList<>(Arrays.asList(
                 new Word("one", "lutti", R.drawable.number_one, R.raw.number_one),
@@ -31,20 +32,22 @@ public class NumbersActivity extends AppCompatActivity {
                 new Word("nine", "wo’e", R.drawable.number_nine, R.raw.number_nine),
                 new Word("ten", "na’aacha", R.drawable.number_ten, R.raw.number_ten)));
 
-        WordAdapter wordAdapter = new WordAdapter(this, numbers, R.color.category_numbers);
+        WordAdapter wordAdapter = new WordAdapter(getActivity(), numbers, R.color.category_numbers);
 
-        ListView listView = findViewById(R.id.wordsList);
+        ListView listView = rootView.findViewById(R.id.wordsList);
         listView.setAdapter(wordAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                audioHandler.play(NumbersActivity.this, numbers.get(position).getSoundResourceId());
+                audioHandler.play(getActivity(), numbers.get(position).getSoundResourceId());
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         audioHandler.releaseMediaPlayer();
     }
