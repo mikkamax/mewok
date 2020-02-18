@@ -20,10 +20,9 @@ public class CustomFragmentAdapter extends FragmentPagerAdapter {
                 return new FamilyFragment();
             case 2 :
                 return new ColorsFragment();
-            case 3 :
+            default :
                 return new PhrasesFragment();
         }
-        return null;
     }
 
     @Override
