@@ -6,15 +6,18 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
+
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewPager = findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new CustomFragmentAdapter(getSupportFragmentManager()));
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager.setAdapter(new CustomFragmentAdapter(getSupportFragmentManager()));
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }
